@@ -1,16 +1,18 @@
 dijkstra(graph, source, destination):
 
-	visited  [vertexesNumber] = {false,...,false}					// Initialisation
+	// init
+	visited  [vertexesNumber] = {false,...,false}
 	previous [vertexesNumber] = {null,...,null}
 	queue    [vertexesNumber] = {source,null,...,null}
 	distances[vertexesNumber] = {infinity,...,infinity}
-	distances[source]         = 0              
+	distances[source]         = 0
 	
 	while queue[0] != null:
 		nearestUnvisited = null
 		nearestDistance  = infinity
 		
-		for each element of queue									// get unvisited with shortest distance
+		// get unvisited with shortest distance
+		for each element of queue
 			if element == null
 				break
 			else if distances[element] < nearestDistance
@@ -18,14 +20,17 @@ dijkstra(graph, source, destination):
 				nearestUnvisited  = element
 				nearestDistance = distances[element]
 			
-		queue[nearestUnvisited]   = null							// remove it from queue
-		visited[nearestUnvisited] = true							// and mark as visited
+		queue[nearestUnvisited]   = null
+		visited[nearestUnvisited] = true
 
 		for each neighbor of nearestUnvisited:
+			// accumulate shortest distance from source
 			alternative = distances[nearestUnvisited]
-				+ distance(nearestUnvisited, neighbor)				// accumulate shortest distance from source
+				+ distance(nearestUnvisited, neighbor)
 			if alternative < distances[neighbor]
-			&& !visited[neighbor]:                                 
-				distances[neighbor] = alternative					// keep the shortest distance from source to neighbour
+			&& !visited[neighbor]:
+				// keep the shortest distance from source to neighbour
+				distances[neighbor] = alternative
 				previous [neighbor] = nearestUnvisited
-				insert neighbor into Q                          	// add unvisited neighbour to queue for processing
+				// add unvisited neighbour to queue for processing
+				insert neighbor into Q
