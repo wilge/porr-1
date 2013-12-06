@@ -7,49 +7,65 @@
 #define GRAPHSIZE  7
 #define INFINITY  99
 
-void auction_algorithm(int graph[][GRAPHSIZE], int target, int *path) {
-	int prices[GRAPHSIZE] = {0};
+// for printing path/prices arrays
+void print_result(int *path) {
+	int i;
 
-	int v, nearest_dist, last_ind,			// utilities
-	    nearest_neighbour, neighbour_dist;
+	for(i = 0; i < GRAPHSIZE; i++)
+		printf("%d ", path[i]);
+	printf("\n");
+}
+
+// calculate minimum as outlined in algorithm description
+void min_a_plus_p(int graph[][GRAPHSIZE], int *prices, 
+			int terminal_node, int *arg_min, int *min) {
+	int j, j_dist;				// iteration utilities
 	
-	path[0]  = 0;					// add source to path
-	int last = 0;					// remember what was added
-	last_ind = 0;
-	
-	// TODO: last not needed, just path[last]
-	while (last != target) {
-		nearest_dist      = INFINITY;		// find nearest neighbour
-		nearest_neighbour = 0;			// of last node in path
-		for (v = 0; v < GRAPHSIZE; v++) {
-			neighbour_dist = graph[last][v] + prices[v];
-			if (neighbour_dist < nearest_dist) {
-				nearest_dist      = neighbour_dist;
-				nearest_neighbour = v;
-			}
-		}
-		
-		printf("::auction:: nearest to %i is %i\n", 
-				last, nearest_neighbour);
-		
-		if (prices[last] < nearest_dist) {
-			prices[last] = nearest_dist;
-			if (last != 0)
-				path[last_ind--] = INFINITY;
-		} else {
-			path[++last_ind] = nearest_neighbour;
-			last             = nearest_neighbour;
+	*min = INFINITY;			// init to unknown
+	*arg_min    = 0;			// init to the first
+
+	for (j = 0; j < GRAPHSIZE; j++) {
+		j_dist = graph[terminal_node][j] + prices[j];
+		if (j_dist < *min) {
+			*min      = j_dist;
+			*arg_min	  = j;
 		}
 	}
 }
 
-void print_result(int *path) {
-	int i;
+void auction_algorithm(int graph[][GRAPHSIZE], int target, int *path) {
+	int prices[GRAPHSIZE] = {0};		// to reach each node - unknown
+	int terminal,				// points to current end of path
+	    arg_min,				// arg min from algorithm description
+	    min;				// min from algorithm descripton
+	
+	path[0]  = 0;				// start off with the source node
+	terminal = 0;
+	
+	while (path[terminal] != target) {
+		min_a_plus_p(graph, prices, path[terminal], 
+			     &arg_min, &min);
+		
+		printf("\n::auction:: i=%i, j=%i, p(i)=%i, min=%i\n", 
+				path[terminal], arg_min, 
+				prices[path[terminal]], min);
+		
+		if (prices[path[terminal]] < min) {			// choose step
 
-	printf("\n::auction:: path: ");
-	for(i = 0; i < GRAPHSIZE; i++)
-		printf("%d ", path[i]);
-	printf("\n");
+			printf("::auction:: => contract P\n");		// step 1
+			prices[path[terminal]] = min;			// set p := min
+			if (terminal != 0)				// contract P
+				path[terminal--] = INFINITY;
+		} else {
+			printf("::auction:: => extend P\n");		// step 2
+			path[++terminal] = arg_min;			// extend P
+		}
+		
+		printf("::auction:: path:   ");
+		print_result(path);
+		printf("::auction:: prices: ");
+		print_result(prices);
+	}
 }
 
 int main() {
@@ -66,7 +82,10 @@ int main() {
 	for (i = 0; i < GRAPHSIZE; i++)
 		path[i] = INFINITY;
 
-	auction_algorithm(graph, 5, path);
+	auction_algorithm(graph, 4, path);
+
+	
+	printf("\n::auction:: path: ");
 	print_result(path);
 	return 0;
 }
