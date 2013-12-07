@@ -4,5 +4,6 @@
 #define GRAPHSIZE  7
 #define INFINITY  99
 
-void dijkstra_algorithm(int graph[][GRAPHSIZE], int target, int *dist);
+void dijkstra_algorithm(int graph[][GRAPHSIZE], int target, int *path);
+void auction_algorithm(int graph[][GRAPHSIZE], int target, int *path);
 
