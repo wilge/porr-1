@@ -4,12 +4,24 @@
 #include "porr.h"
 #include <stdio.h>
 
-void print_result(int *dist) {
+// init path to unknown
+void init_path(int *path) {
 	int i;
+	
+	for (i = 0; i < GRAPHSIZE; i++) {
+		path[i] = INFINITY;
+	}
+}
 
-	printf("\n::dijkstra:: distances: ");
-	for(i = 0; i < GRAPHSIZE; i++)
-		printf("%d ",dist[i]);
+// print all path fields, imitting unknown ones
+void print_path(int *path) {
+	int i;
+	
+	printf("\n::path:: ");
+	for (i = 0; i < GRAPHSIZE; i++) {
+		if (path[i] != INFINITY)
+			printf("%i ", path[i]);
+	}
 	printf("\n");
 }
 
@@ -22,12 +34,19 @@ int main() {
 		{INFINITY,3,INFINITY,INFINITY,INFINITY,INFINITY,7},
 		{5,INFINITY,6,1,INFINITY,INFINITY,6},
 		{INFINITY,8,INFINITY,6,7,6,INFINITY}	};
+	
+	int target = 4;					// set target node
+	int path[GRAPHSIZE];				// result variable
+	
+	init_path(path);				// init path to unknown
+	dijkstra_algorithm(graph, target, path);	// execute algorithm
+	print_path(path);				// print result
+	
+	init_path(path);				// init path to unknown
+	auction_algorithm(graph, target, path);		// execute algorithm
+	print_path(path);				// print result
 
-	int i, dist[GRAPHSIZE];
-	for (i = 0; i < GRAPHSIZE; i++)
-		dist[i] = INFINITY;
-
-	dijkstra_algorithm(graph, 5, dist);
-	print_result(dist);
+	printf("\n");	
 	return 0;
 }
+
