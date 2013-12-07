@@ -1,14 +1,11 @@
 // WEiTI PORR 13Z
 // JAKUB JARZYNSKI & LUKASZ RUTA
 
-// #include "porr.h"
+#include "porr.h"
 #include <stdio.h>
 
-#define GRAPHSIZE  7
-#define INFINITY  99
-
 // for printing path/prices arrays
-void print_result(int *path) {
+void print_current(int *path) {
 	int i;
 
 	for(i = 0; i < GRAPHSIZE; i++)
@@ -62,30 +59,9 @@ void auction_algorithm(int graph[][GRAPHSIZE], int target, int *path) {
 		}
 		
 		printf("::auction:: path:   ");
-		print_result(path);
+		print_current(path);
 		printf("::auction:: prices: ");
-		print_result(prices);
+		print_current(prices);
 	}
 }
 
-int main() {
-	int graph[GRAPHSIZE][GRAPHSIZE] =
-	{	{INFINITY,2,4,7,INFINITY,5,INFINITY},
-		{2,INFINITY,INFINITY,6,3,INFINITY,8},
-		{4,INFINITY,INFINITY,INFINITY,INFINITY,6,INFINITY},
-		{7,6,INFINITY,INFINITY,INFINITY,1,6},
-		{INFINITY,3,INFINITY,INFINITY,INFINITY,INFINITY,7},
-		{5,INFINITY,6,1,INFINITY,INFINITY,6},
-		{INFINITY,8,INFINITY,6,7,6,INFINITY}	};
-
-	int i, path[GRAPHSIZE];
-	for (i = 0; i < GRAPHSIZE; i++)
-		path[i] = INFINITY;
-
-	auction_algorithm(graph, 4, path);
-
-	
-	printf("\n::auction:: path: ");
-	print_result(path);
-	return 0;
-}
