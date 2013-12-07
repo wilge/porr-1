@@ -74,7 +74,7 @@ void dijkstra_algorithm(int graph[][GRAPHSIZE], int target, int *path) {
 				continue;
 			// accumulate shortest distance from source
 			alt = dist[u] + graph[u][v];
-			printf("::dijkstra:: v=%i, alt=%i, dist[v]=%i\n", v, alt, dist[i]);
+			printf("::dijkstra:: v=%i, alt=%i, dist[v]=%i\n", v, alt, dist[v]);
 			if (alt < dist[v]) {
 				printf("::dijkstra:: => alt < dist[%i]\n", v);
 				// keep the shortest distance from source to v
