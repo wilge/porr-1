@@ -18,7 +18,7 @@ void min_a_plus_p(int graph[][GRAPHSIZE], int *prices,
 			int terminal_node, int *arg_min, int *min) {
 	int j, j_dist;				// iteration utilities
 	
-	*min = INFINITY;			// init to unknown
+	*min 	    = INFINITY;			// init to unknown
 	*arg_min    = 0;			// init to the first
 
 	for (j = 0; j < GRAPHSIZE; j++) {
